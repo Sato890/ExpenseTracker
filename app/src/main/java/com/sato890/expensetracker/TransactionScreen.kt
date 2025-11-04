@@ -22,10 +22,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
-fun TransactionScreen(
-    factory: TransactionViewModelFactory
-) {
-    val viewModel: TransactionViewModel = viewModel(factory = factory)
+fun TransactionScreen() {
+    val viewModel: TransactionViewModel = viewModel()
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 

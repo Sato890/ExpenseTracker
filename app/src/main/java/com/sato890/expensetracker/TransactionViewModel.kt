@@ -9,6 +9,8 @@ import com.sato890.expensetracker.data.local.Transaction
 import androidx.lifecycle.viewModelScope
 import com.sato890.expensetracker.data.TransactionRepository
 import kotlinx.coroutines.launch
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 data class TransactionScreenUiState(
     val description: String = "",
@@ -16,7 +18,8 @@ data class TransactionScreenUiState(
     val transactions: List<Transaction> = emptyList()
 )
 
-class TransactionViewModel(
+@HiltViewModel
+class TransactionViewModel @Inject constructor(
     private val repository: TransactionRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(TransactionScreenUiState())
