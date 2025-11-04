@@ -15,19 +15,18 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
-fun TransactionScreen() {
-
-    var description by remember { mutableStateOf("") }
-    var amount by remember { mutableStateOf("") }
+fun TransactionScreen(
+    viewModel: TransactionViewModel = viewModel()
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier
@@ -40,8 +39,8 @@ fun TransactionScreen() {
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
-            value = description,
-            onValueChange = { description = it },
+            value = uiState.description,
+            onValueChange = { viewModel.onDescriptionChange(it) },
             label = { Text("Description") },
             modifier = Modifier.fillMaxWidth()
         )
@@ -49,8 +48,8 @@ fun TransactionScreen() {
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = amount,
-            onValueChange = { amount = it },
+            value = uiState.amount,
+            onValueChange = { viewModel.onAmountChange(it) },
             label = { Text("Amount") },
             modifier = Modifier.fillMaxWidth()
         )
@@ -58,7 +57,7 @@ fun TransactionScreen() {
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { },
+            onClick = { viewModel.addTransaction() },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("ADD TRANSACTION")
@@ -66,14 +65,12 @@ fun TransactionScreen() {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Divider() // A visual separator line
+        HorizontalDivider()
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        val transactions = listOf("Groceries: $55.40", "Gas: $40.00", "Coffee: $4.50", "Rent: $1200.00", "Movie Tickets: $25.00","Groceries: $55.40", "Gas: $40.00", "Coffee: $4.50", "Rent: $1200.00", "Movie Tickets: $25.00","Groceries: $55.40", "Gas: $40.00", "Coffee: $4.50", "Rent: $1200.00", "Movie Tickets: $25.00","Groceries: $55.40", "Gas: $40.00", "Coffee: $4.50", "Rent: $1200.00", "Movie Tickets: $25.00","Groceries: $55.40", "Gas: $40.00", "Coffee: $4.50", "Rent: $1200.00", "Movie Tickets: $25.00")
-
         LazyColumn {
-            items(transactions) { transaction ->
+            items(uiState.transactions) { transaction ->
                 Text(text = transaction, modifier = Modifier.padding(vertical = 8.dp))
             }
         }
