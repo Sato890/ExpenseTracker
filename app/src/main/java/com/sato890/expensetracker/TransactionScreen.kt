@@ -18,10 +18,17 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.Divider
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 
 @Composable
 fun TransactionScreen() {
+
+    var description by remember { mutableStateOf("") }
+    var amount by remember { mutableStateOf("") }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -33,8 +40,8 @@ fun TransactionScreen() {
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
-            value = "",
-            onValueChange = { },
+            value = description,
+            onValueChange = { description = it },
             label = { Text("Description") },
             modifier = Modifier.fillMaxWidth()
         )
@@ -42,8 +49,8 @@ fun TransactionScreen() {
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = "",
-            onValueChange = { },
+            value = amount,
+            onValueChange = { amount = it },
             label = { Text("Amount") },
             modifier = Modifier.fillMaxWidth()
         )
