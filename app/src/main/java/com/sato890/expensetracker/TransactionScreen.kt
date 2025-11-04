@@ -1,7 +1,6 @@
 package com.sato890.expensetracker
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -24,8 +23,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun TransactionScreen(
-    viewModel: TransactionViewModel = viewModel()
+    factory: TransactionViewModelFactory
 ) {
+    val viewModel: TransactionViewModel = viewModel(factory = factory)
+
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Column(
@@ -71,16 +72,15 @@ fun TransactionScreen(
 
         LazyColumn {
             items(uiState.transactions) { transaction ->
-                Text(text = transaction, modifier = Modifier.padding(vertical = 8.dp))
+                Text(
+                    text = "${transaction.description}: $${transaction.amount}",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp)
+                )
             }
         }
 
 
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun TransactionScreenPreview() {
-    TransactionScreen()
 }

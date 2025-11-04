@@ -9,10 +9,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.sato890.expensetracker.data.TransactionRepository
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val database = (application as ExpenseTrackerApp).database
+        val dao = database.transactionDao()
+        val repository = TransactionRepository(dao)
+        val viewModelFactory = TransactionViewModelFactory(repository)
+
         enableEdgeToEdge()
         setContent {
             ExpenseTrackerTheme {
@@ -20,7 +27,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    TransactionScreen()
+                    TransactionScreen(factory = viewModelFactory)
                 }
             }
         }
