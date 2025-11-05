@@ -1,4 +1,4 @@
-package com.sato890.expensetracker
+package com.sato890.expensetracker.ui.transaction
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

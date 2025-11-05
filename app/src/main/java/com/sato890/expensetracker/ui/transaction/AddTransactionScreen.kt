@@ -1,4 +1,4 @@
-package com.sato890.expensetracker
+package com.sato890.expensetracker.ui.transaction
 
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.Column
@@ -20,9 +20,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun TransactionScreen() {
+fun AddTransactionScreen(onNavigateUp: () -> Unit,
+                         viewModel: TransactionViewModel = hiltViewModel()
+) {
     val viewModel: TransactionViewModel = viewModel()
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
