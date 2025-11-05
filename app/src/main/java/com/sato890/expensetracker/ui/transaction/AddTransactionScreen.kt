@@ -18,9 +18,9 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.getValue
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun AddTransactionScreen(onNavigateUp: () -> Unit,
@@ -58,6 +58,7 @@ fun AddTransactionScreen(onNavigateUp: () -> Unit,
 
         Spacer(modifier = Modifier.height(16.dp))
 
+
         Button(
             onClick = { viewModel.addTransaction() },
             modifier = Modifier.fillMaxWidth()
@@ -74,7 +75,7 @@ fun AddTransactionScreen(onNavigateUp: () -> Unit,
         LazyColumn {
             items(uiState.transactions) { transaction ->
                 Text(
-                    text = "${transaction.description}: $${transaction.amount}",
+                    text = "${transaction.description}: $${transaction.amount} (${transaction.categoryName})",
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp)

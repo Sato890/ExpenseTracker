@@ -3,7 +3,8 @@ package com.sato890.expensetracker.di
 import android.content.Context
 import androidx.room.Room
 import com.sato890.expensetracker.data.local.AppDatabase
-import com.sato890.expensetracker.data.local.TransactionDao
+import com.sato890.expensetracker.data.local.category.CategoryDao
+import com.sato890.expensetracker.data.local.transaction.TransactionDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,15 +20,21 @@ object DatabaseModule {
     @Singleton
     fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
         return Room.databaseBuilder(
-            context,
-            AppDatabase::class.java,
-            "expense_tracker_db"
-        ).build()
+                context,
+                AppDatabase::class.java,
+                "expense_tracker_db"
+            ).fallbackToDestructiveMigration(false).build()
     }
 
     @Provides
     @Singleton
     fun provideTransactionDao(database: AppDatabase): TransactionDao {
         return database.transactionDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCategoryDao(database: AppDatabase): CategoryDao {
+        return database.categoryDao()
     }
 }
