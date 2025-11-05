@@ -1,4 +1,4 @@
-package com.sato890.expensetracker
+package com.sato890.expensetracker.ui.transaction
 
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.Column
@@ -18,11 +18,14 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.getValue
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
-fun TransactionScreen() {
+fun AddTransactionScreen(onNavigateUp: () -> Unit,
+                         viewModel: TransactionViewModel = hiltViewModel()
+) {
     val viewModel: TransactionViewModel = viewModel()
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -55,6 +58,7 @@ fun TransactionScreen() {
 
         Spacer(modifier = Modifier.height(16.dp))
 
+
         Button(
             onClick = { viewModel.addTransaction() },
             modifier = Modifier.fillMaxWidth()
@@ -71,7 +75,7 @@ fun TransactionScreen() {
         LazyColumn {
             items(uiState.transactions) { transaction ->
                 Text(
-                    text = "${transaction.description}: $${transaction.amount}",
+                    text = "${transaction.description}: $${transaction.amount} (${transaction.categoryName})",
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp)
