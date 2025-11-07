@@ -20,6 +20,5 @@ fun DashboardScreen(onAddTransactionClick: () -> Unit) {
         Button(onClick = onAddTransactionClick) {
             Text("Add Transaction")
         }
-        // TODO
     }
 }

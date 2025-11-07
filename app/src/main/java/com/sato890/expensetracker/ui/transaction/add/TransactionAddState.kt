@@ -1,4 +1,4 @@
-package com.sato890.expensetracker.ui.transaction
+package com.sato890.expensetracker.ui.transaction.add
 
 
 data class TransactionListItem(
