@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.sato890.expensetracker.data.local.AppDatabase
 import com.sato890.expensetracker.data.local.category.CategoryDao
 import com.sato890.expensetracker.data.local.transaction.TransactionDao
+import com.sato890.expensetracker.data.local.account.AccountDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,5 +37,11 @@ object DatabaseModule {
     @Singleton
     fun provideCategoryDao(database: AppDatabase): CategoryDao {
         return database.categoryDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAccountDao(database: AppDatabase): AccountDao {
+        return database.accountDao()
     }
 }

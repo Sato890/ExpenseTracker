@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.update
 import com.sato890.expensetracker.data.local.transaction.Transaction
 import androidx.lifecycle.viewModelScope
 import com.sato890.expensetracker.data.TransactionRepository
+import com.sato890.expensetracker.data.local.account.Account
 import com.sato890.expensetracker.data.local.category.Category
 import kotlinx.coroutines.launch
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,7 +32,7 @@ class TransactionViewModel @Inject constructor(
     val uiState: StateFlow<TransactionScreenUiState> = _uiState.asStateFlow()
 
     init {
-        seedCategories()
+        seedInitialData()
 
         viewModelScope.launch {
             repository.getTransactionFeedItems()
@@ -76,7 +77,8 @@ class TransactionViewModel @Inject constructor(
         val newTransaction = Transaction(
             description = description,
             amount = amount,
-            categoryId = 1
+            categoryId = 1,
+            accountId = 1
         )
 
         viewModelScope.launch {
@@ -86,12 +88,13 @@ class TransactionViewModel @Inject constructor(
         _uiState.update { it.copy(description = "", amount = "") }
     }
 
-    private fun seedCategories() {
+    private fun seedInitialData() {
         viewModelScope.launch {
             if (repository.getTransactionFeedItems().first().isEmpty()) {
                 repository.insertCategory(Category(name = "Food"))
                 repository.insertCategory(Category(name = "Transport"))
                 repository.insertCategory(Category(name = "Bills"))
+                repository.insertAccount(Account(name = "Cash", currency = "EUR"))
             }
         }
     }
