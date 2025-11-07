@@ -1,4 +1,4 @@
-package com.sato890.expensetracker.ui.transaction
+package com.sato890.expensetracker.ui.transaction.add
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +13,6 @@ import com.sato890.expensetracker.data.local.category.Category
 import kotlinx.coroutines.launch
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import com.sato890.expensetracker.ui.transaction.TransactionListItem
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
