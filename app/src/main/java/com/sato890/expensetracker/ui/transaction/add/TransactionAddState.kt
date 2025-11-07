@@ -6,4 +6,5 @@ data class TransactionListItem(
     val description: String,
     val amount: Double,
     val categoryName: String,
+    val date: Long = System.currentTimeMillis()
 )

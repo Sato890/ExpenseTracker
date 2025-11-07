@@ -10,20 +10,22 @@ import androidx.lifecycle.viewModelScope
 import com.sato890.expensetracker.data.TransactionRepository
 import com.sato890.expensetracker.data.local.account.Account
 import com.sato890.expensetracker.data.local.category.Category
-import kotlinx.coroutines.launch
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
+import java.util.Date
 
 data class TransactionScreenUiState(
     val description: String = "",
     val amount: String = "",
-    val transactions: List<TransactionListItem> = emptyList()
+    val transactions: List<TransactionListItem> = emptyList(),
+    val date: Long = Date().time
 )
 
 @HiltViewModel
-class TransactionViewModel @Inject constructor(
+class TransactionAddViewModel @Inject constructor(
     private val repository: TransactionRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(TransactionScreenUiState())
@@ -42,7 +44,8 @@ class TransactionViewModel @Inject constructor(
                                 id = transaction.id,
                                 description = transaction.description,
                                 amount = transaction.amount,
-                                categoryName = category.name
+                                categoryName = category.name,
+                                date = transaction.date
                             )
                         }
                     }
@@ -65,6 +68,10 @@ class TransactionViewModel @Inject constructor(
         }
     }
 
+    fun onDateChange(newDateMillis: Long) {
+        _uiState.update { it.copy(date = newDateMillis) }
+    }
+
     fun addTransaction() {
         val description = _uiState.value.description
         val amount = _uiState.value.amount.toDoubleOrNull()
@@ -77,14 +84,15 @@ class TransactionViewModel @Inject constructor(
             description = description,
             amount = amount,
             categoryId = 1,
-            accountId = 1
+            accountId = 1,
+            date = _uiState.value.date
         )
 
         viewModelScope.launch {
             repository.insert(newTransaction)
         }
 
-        _uiState.update { it.copy(description = "", amount = "") }
+        _uiState.update { it.copy(description = "", amount = "", date = System.currentTimeMillis() ) }
     }
 
     private fun seedInitialData() {
