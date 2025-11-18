@@ -20,7 +20,6 @@ import java.util.Date
 data class TransactionScreenUiState(
     val description: String = "",
     val amount: String = "",
-    val transactions: List<TransactionListItem> = emptyList(),
     val date: Long = Date().time
 )
 
@@ -31,30 +30,6 @@ class TransactionAddViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(TransactionScreenUiState())
 
     val uiState: StateFlow<TransactionScreenUiState> = _uiState.asStateFlow()
-
-    init {
-        seedInitialData()
-
-        viewModelScope.launch {
-            repository.getTransactionFeedItems()
-                .map { transactionMap ->
-                    transactionMap.flatMap { (category, transactions) ->
-                        transactions.map { transaction ->
-                            TransactionListItem(
-                                id = transaction.id,
-                                description = transaction.description,
-                                amount = transaction.amount,
-                                categoryName = category.name,
-                                date = transaction.date
-                            )
-                        }
-                    }
-                }
-                .collect { transactions ->
-                    _uiState.update { it.copy(transactions = transactions) }
-                }
-        }
-    }
 
     fun onDescriptionChange(newDescription: String) {
         _uiState.update { currentState ->
@@ -95,14 +70,5 @@ class TransactionAddViewModel @Inject constructor(
         _uiState.update { it.copy(description = "", amount = "", date = System.currentTimeMillis() ) }
     }
 
-    private fun seedInitialData() {
-        viewModelScope.launch {
-            if (repository.getTransactionFeedItems().first().isEmpty()) {
-                repository.insertCategory(Category(name = "Food"))
-                repository.insertCategory(Category(name = "Transport"))
-                repository.insertCategory(Category(name = "Bills"))
-                repository.insertAccount(Account(name = "Cash", currency = "EUR"))
-            }
-        }
-    }
+
 }

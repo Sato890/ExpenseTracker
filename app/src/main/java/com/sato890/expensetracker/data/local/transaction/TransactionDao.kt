@@ -20,4 +20,12 @@ interface TransactionDao {
         INNER JOIN categories ON transactions.categoryId = categories.id
     """)
     fun getTransactionFeedItems(): Flow<Map<Category, List<Transaction>>>
+
+    @Query("""
+        SELECT * FROM transactions 
+        INNER JOIN categories ON transactions.categoryId = categories.id
+        WHERE transactions.accountId = :accountId
+    """
+    )
+    fun getTransactionFeedItemsForAccounts(accountId: Int): Flow<Map<Category, List<Transaction>>>
 }
