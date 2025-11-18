@@ -26,6 +26,10 @@ class TransactionRepository @Inject constructor(
         return accountDao.getAll()
     }
 
+    suspend fun getTransactionFeedItemsForAccount(accountId: Int): Flow<Map<Category, List<Transaction>>> {
+        return transactionDao.getTransactionFeedItemsForAccounts(accountId)
+    }
+
     suspend fun insert(transaction: Transaction) {
         transactionDao.insert(transaction)
     }

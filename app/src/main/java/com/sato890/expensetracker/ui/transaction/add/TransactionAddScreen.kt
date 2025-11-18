@@ -27,8 +27,6 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sato890.expensetracker.util.formatDate
 import java.util.Calendar
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.runtime.remember
 
 @Composable
 fun TransactionAddScreen(onNavigateUp: () -> Unit,
@@ -97,24 +95,6 @@ fun TransactionAddScreen(onNavigateUp: () -> Unit,
         ) {
             Text("ADD TRANSACTION")
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        HorizontalDivider()
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        LazyColumn {
-            items(uiState.transactions) { transaction ->
-                Text(
-                    text = "${transaction.description}: ${transaction.amount} (${transaction.categoryName}, ${formatDate(transaction.date)})",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp)
-                )
-            }
-        }
-
 
     }
 }
