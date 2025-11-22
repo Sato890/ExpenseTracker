@@ -1,7 +1,5 @@
 package com.sato890.expensetracker.data
 
-import com.sato890.expensetracker.data.local.account.Account
-import com.sato890.expensetracker.data.local.account.AccountDao
 import com.sato890.expensetracker.data.local.transaction.Transaction
 import com.sato890.expensetracker.data.local.transaction.TransactionDao
 import com.sato890.expensetracker.data.local.category.Category
@@ -11,8 +9,7 @@ import javax.inject.Inject
 
 class TransactionRepository @Inject constructor(
     private val transactionDao: TransactionDao,
-    private val categoryDao: CategoryDao,
-    private val accountDao: AccountDao
+    private val categoryDao: CategoryDao
 ) {
     fun getAllTransactions(): Flow<List<Transaction>> {
         return transactionDao.getAll()
@@ -20,10 +17,6 @@ class TransactionRepository @Inject constructor(
 
     fun getTransactionFeedItems(): Flow<Map<Category, List<Transaction>>> {
         return transactionDao.getTransactionFeedItems()
-    }
-
-    fun getAllAccounts(): Flow<List<Account>> {
-        return accountDao.getAll()
     }
 
     suspend fun getTransactionFeedItemsForAccount(accountId: Int): Flow<Map<Category, List<Transaction>>> {
@@ -38,7 +31,4 @@ class TransactionRepository @Inject constructor(
         categoryDao.insert(category)
     }
 
-    suspend fun insertAccount(account: Account) {
-        accountDao.insert(account)
-    }
 }

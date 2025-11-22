@@ -27,7 +27,8 @@ import com.sato890.expensetracker.ui.transaction.add.TransactionListItem
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DashboardScreen(
-    viewModel: DashboardViewModel = hiltViewModel()
+    viewModel: DashboardViewModel = hiltViewModel(),
+    onAddAccountClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val pagerState = rememberPagerState(
@@ -52,7 +53,7 @@ fun DashboardScreen(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(text = "Accounts", style = MaterialTheme.typography.titleLarge)
-            IconButton(onClick = { /* TODO: Navigate to Account Management */ }) {
+            IconButton(onClick = onAddAccountClick) {
                 Icon(Icons.Default.AddCard, contentDescription = "Manage Accounts")
             }
         }
