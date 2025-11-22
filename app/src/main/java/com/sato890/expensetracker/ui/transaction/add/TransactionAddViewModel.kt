@@ -17,19 +17,15 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.util.Date
 
-data class TransactionScreenUiState(
-    val description: String = "",
-    val amount: String = "",
-    val date: Long = Date().time
-)
+
 
 @HiltViewModel
 class TransactionAddViewModel @Inject constructor(
     private val repository: TransactionRepository
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(TransactionScreenUiState())
+    private val _uiState = MutableStateFlow(TransactionAddScreenUiState())
 
-    val uiState: StateFlow<TransactionScreenUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<TransactionAddScreenUiState> = _uiState.asStateFlow()
 
     fun onDescriptionChange(newDescription: String) {
         _uiState.update { currentState ->

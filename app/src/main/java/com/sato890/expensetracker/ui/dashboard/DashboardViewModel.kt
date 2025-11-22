@@ -6,16 +6,12 @@ import androidx.lifecycle.viewModelScope
 import com.sato890.expensetracker.data.AccountRepository
 import com.sato890.expensetracker.data.TransactionRepository
 import com.sato890.expensetracker.data.local.account.Account
-import com.sato890.expensetracker.ui.transaction.add.TransactionListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
+import com.sato890.expensetracker.ui.transaction.list.TransactionListUiState
 
-data class DashboardUiState(
-    val accounts: List<Account> = emptyList(),
-    val recentTransactions: List<TransactionListItem> = emptyList()
-)
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
@@ -40,7 +36,7 @@ class DashboardViewModel @Inject constructor(
                     .map { transactionMap ->
                         transactionMap.flatMap { (category, transactions) ->
                             transactions.map { transaction ->
-                                TransactionListItem(
+                                TransactionListUiState(
                                     id = transaction.id,
                                     description = transaction.description,
                                     amount = transaction.amount,
