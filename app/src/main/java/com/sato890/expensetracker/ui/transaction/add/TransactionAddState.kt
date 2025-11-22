@@ -1,10 +1,10 @@
 package com.sato890.expensetracker.ui.transaction.add
 
+import java.util.Date
 
-data class TransactionListItem(
-    val id: Int,
-    val description: String,
-    val amount: Double,
-    val categoryName: String,
-    val date: Long = System.currentTimeMillis()
+
+data class TransactionAddScreenUiState(
+    val description: String = "",
+    val amount: String = "",
+    val date: Long = Date().time
 )
