@@ -3,6 +3,7 @@ package com.sato890.expensetracker.ui.dashboard
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sato890.expensetracker.data.AccountRepository
 import com.sato890.expensetracker.data.TransactionRepository
 import com.sato890.expensetracker.data.local.account.Account
 import com.sato890.expensetracker.ui.transaction.add.TransactionListItem
@@ -19,7 +20,8 @@ data class DashboardUiState(
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
-    private val repository: TransactionRepository
+    private val transactionRepository: TransactionRepository,
+    private val accountRepository: AccountRepository
 ) : ViewModel() {
 
     private val _selectedAccountId = MutableStateFlow<Int?>(null)
@@ -27,14 +29,14 @@ class DashboardViewModel @Inject constructor(
     val uiState: StateFlow<DashboardUiState>
 
     init {
-        val accountsFlow = repository.getAllAccounts()
+        val accountsFlow = accountRepository.getAllAccounts()
 
         val transactionsFlow = _selectedAccountId.flatMapLatest { accountId ->
             if (accountId == null) {
                 flowOf(emptyList())
             } else {
 
-                repository.getTransactionFeedItemsForAccount(accountId)
+                transactionRepository.getTransactionFeedItemsForAccount(accountId)
                     .map { transactionMap ->
                         transactionMap.flatMap { (category, transactions) ->
                             transactions.map { transaction ->

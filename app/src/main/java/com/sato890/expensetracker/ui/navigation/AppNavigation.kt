@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.sato890.expensetracker.ui.account.detail.AccountDetailScreen
 import com.sato890.expensetracker.ui.transaction.add.TransactionAddScreen
 import com.sato890.expensetracker.ui.dashboard.DashboardScreen
 import com.sato890.expensetracker.ui.transaction.list.TransactionListScreen
@@ -48,12 +49,19 @@ fun AppNavigation() {
             startDestination = Screen.Dashboard.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(Screen.Dashboard.route) { DashboardScreen() }
+            composable(Screen.Dashboard.route) {
+                DashboardScreen(onAddAccountClick = {
+                    navController.navigate(Screen.AccountDetail.route)
+                })
+            }
             composable(Screen.TransactionList.route) { TransactionListScreen() }
             composable(Screen.Budgets.route) { BudgetsScreen() }
 
             composable(Screen.TransactionAdd.route) {
                 TransactionAddScreen(onNavigateUp = { navController.navigateUp() })
+            }
+            composable(Screen.AccountDetail.route) {
+                AccountDetailScreen(onNavigateUp = { navController.navigateUp() })
             }
         }
     }
