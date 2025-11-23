@@ -45,8 +45,12 @@ fun AccountDetailScreen(onNavigateUp: () -> Unit,
 
 
         Button(
-            onClick = { viewModel.saveAccount() },
+            onClick = {
+                viewModel.saveAccount()
+                onNavigateUp()
+            },
             modifier = Modifier.fillMaxWidth()
+
         ) {
             Text("Save Account")
         }
