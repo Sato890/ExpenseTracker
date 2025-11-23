@@ -34,9 +34,9 @@ fun DashboardScreen(
         pageCount = { uiState.accounts.size }
     )
 
-    LaunchedEffect(pagerState) {
+    LaunchedEffect(pagerState, uiState.accounts) {
         snapshotFlow { pagerState.currentPage }.collect { page ->
-            if (uiState.accounts.isNotEmpty()) {
+            if (uiState.accounts.isNotEmpty() && page < uiState.accounts.size) {
                 viewModel.onAccountSelected(uiState.accounts[page])
             }
         }
