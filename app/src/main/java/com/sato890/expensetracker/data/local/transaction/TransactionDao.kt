@@ -28,4 +28,9 @@ interface TransactionDao {
     """
     )
     fun getTransactionFeedItemsForAccounts(accountId: Int): Flow<Map<Category, List<Transaction>>>
+
+
+    @Query("SELECT * FROM categories")
+    fun getAllCategories(): Flow<List<Category>>
+
 }

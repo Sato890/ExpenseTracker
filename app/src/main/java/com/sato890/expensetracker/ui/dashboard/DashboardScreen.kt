@@ -94,6 +94,7 @@ fun DashboardScreen(
                 TransactionListItem(transaction = transaction)
             }
         }
+
     }
 }
 
