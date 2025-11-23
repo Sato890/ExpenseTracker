@@ -21,18 +21,19 @@ class DashboardViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _selectedAccountId = MutableStateFlow<Int?>(null)
+    val selectedAccountId: StateFlow<Int?> = _selectedAccountId.asStateFlow()
 
     val uiState: StateFlow<DashboardUiState>
 
     init {
-        val accountsFlow = accountRepository.getAllAccounts()
+        val accountsFlow = accountRepository.getAll()
 
         val transactionsFlow = _selectedAccountId.flatMapLatest { accountId ->
             if (accountId == null) {
                 flowOf(emptyList())
             } else {
 
-                transactionRepository.getTransactionFeedItemsForAccount(accountId)
+                transactionRepository.getFeedItemsForAccount(accountId)
                     .map { transactionMap ->
                         transactionMap.flatMap { (category, transactions) ->
                             transactions.map { transaction ->

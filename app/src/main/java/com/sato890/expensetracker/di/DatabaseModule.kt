@@ -12,6 +12,13 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
+import android.content.ContentValues
+import androidx.sqlite.db.SupportSQLiteDatabase
+import androidx.room.RoomDatabase
+import com.sato890.expensetracker.data.local.category.CategoryDefaults
+import android.database.sqlite.SQLiteDatabase
+
+
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -21,10 +28,26 @@ object DatabaseModule {
     @Singleton
     fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
         return Room.databaseBuilder(
-                context,
-                AppDatabase::class.java,
-                "expense_tracker_db"
-            ).fallbackToDestructiveMigration(false).build()
+            context,
+            AppDatabase::class.java,
+            "expense_tracker_db"
+        )
+            .fallbackToDestructiveMigration(false)
+            .addCallback(object : RoomDatabase.Callback() {
+                override fun onCreate(db: SupportSQLiteDatabase) {
+                    super.onCreate(db)
+
+                    CategoryDefaults.defaultCategories.forEach { category ->
+                        val values = ContentValues().apply {
+                            put("name", category.name)
+                            put("icon", category.icon)
+                        }
+
+                        db.insert("categories", SQLiteDatabase.CONFLICT_REPLACE, values)
+                    }
+                }
+            })
+            .build()
     }
 
     @Provides
@@ -44,4 +67,5 @@ object DatabaseModule {
     fun provideAccountDao(database: AppDatabase): AccountDao {
         return database.accountDao()
     }
+
 }

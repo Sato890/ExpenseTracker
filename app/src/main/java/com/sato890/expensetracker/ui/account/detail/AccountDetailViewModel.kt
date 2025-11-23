@@ -36,7 +36,7 @@ class AccountDetailViewModel @Inject constructor (
         )
 
         viewModelScope.launch {
-            repository.insertAccount(newAccount)
+            repository.insert(newAccount)
         }
 
         _uiState.update { it.copy(name = "") }

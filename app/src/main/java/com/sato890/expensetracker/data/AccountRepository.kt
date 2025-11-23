@@ -8,11 +8,11 @@ import javax.inject.Inject
 class AccountRepository @Inject constructor(
     private val accountDao: AccountDao
 ) {
-    fun getAllAccounts(): Flow<List<Account>> {
+    fun getAll(): Flow<List<Account>> {
         return accountDao.getAll()
     }
 
-    suspend fun insertAccount(account: Account) {
+    suspend fun insert(account: Account) {
         accountDao.insert(account)
     }
 }
