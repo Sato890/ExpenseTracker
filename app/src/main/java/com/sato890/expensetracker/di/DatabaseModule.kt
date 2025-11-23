@@ -32,6 +32,7 @@ object DatabaseModule {
             AppDatabase::class.java,
             "expense_tracker_db"
         )
+            .fallbackToDestructiveMigration(false)
             .addCallback(object : RoomDatabase.Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
